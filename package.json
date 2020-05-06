@@ -1,0 +1,24 @@
+{
+  "name": "todo-njs",
+  "version": "1.0.0",
+  "description": "Simple todo app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devkartic/todo-njs.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devkartic/todo-njs/issues"
+  },
+  "homepage": "https://github.com/devkartic/todo-njs#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.2",
+    "express": "^4.17.1"
+  }
+}
