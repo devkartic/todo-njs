@@ -1,4 +1,4 @@
-let data = [{item: 'Get Milk'}, {item: 'Walk dog',},{ item: 'Kick some coding ass'}];
+// let data = [{item: 'Get Milk'}, {item: 'Walk dog',},{ item: 'Kick some coding ass'}];
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -11,13 +11,7 @@ let todoSchema = new mongoose.Schema({
 });
 
 // Create Model
-let Todo = mongoose.model('Todo', todoSchema)
-
-// Save data with exception and success message
-let itemOne = Todo({item: 'buy flowers'}).save(function(err){
-    if (err) throw err;
-    console.log('item saved');
-});
+let Todo = mongoose.model('Todo', todoSchema);
 
 // Use body-parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -25,18 +19,26 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 module.exports = function(app){
     
     app.get('/todo', function(req, res){
-        res.render('todoList', {todos: data});
+        // Get data from mongodb and pass to views
+        Todo.find({}, function(err, data){
+            if (err) throw err;
+            res.render('todoList', {todos: data});
+        });
     });
 
     app.post('/todo', urlencodedParser,function(req, res){
-        data.push(req.body);
-        res.json(data);
+        // Get data from view and save data into mongodb
+        let newTodo = Todo(req.body).save(function(err, data){
+            if (err) throw err;
+            res.json(data);
+        });
     });
 
     app.delete('/todo/:item', function(req, res){
-        data = data.filter(function name(todo) {
-            return todo.item.replace(/ /g, '-') !== req.params.item;
+        // delete requested item from mongodb
+        Todo.find({item:req.params.item.replace(/\-/g, ' ') }).remove(function(err, data){
+            if (err) throw err;
+            res.json(data);
         });
-        res.json(data);
     });
 }
